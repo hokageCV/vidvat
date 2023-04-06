@@ -16,3 +16,7 @@ export interface Quiz {
   questions: Question[];
   timeLimit: number;
 }
+
+export interface QuizDocument extends Quiz {
+  id: string;
+}

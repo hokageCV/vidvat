@@ -3,20 +3,23 @@ import { useFormik } from "formik";
 import React from "react";
 import { FormField } from "./FormField";
 import QuizList from "./QuestionsList";
-import { saveQuizToFirestore } from "../../utils/quizUtils";
+import { putQuizIntoFirestore } from "../../utils/quizUtils";
+
+const initialFormValues = {
+  title: "",
+  description: "",
+  points: 0,
+  questions: [],
+  timeLimit: 0,
+};
 
 export default function QuizForm() {
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      points: 0,
-      questions: [],
-      timeLimit: 0,
-    },
+    initialValues: initialFormValues,
+
     onSubmit: (values) => {
       console.log(values);
-      saveQuizToFirestore(values);
+      putQuizIntoFirestore(values);
     },
   });
 
