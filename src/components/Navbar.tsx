@@ -1,6 +1,7 @@
-import { Flex, Box, Button, useDisclosure } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import logo from '/logo.png';
+import { Flex, Box, Button, useDisclosure } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import logo from "/logo.png";
+import { logout } from "../utils/authUtils";
 
 export function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -13,18 +14,25 @@ export function Navbar() {
         </Box>
       </Flex>
 
-      <Box display={{ base: 'block', sm: 'none' }} onClick={onOpen}>
+      <Box display={{ base: "block", sm: "none" }} onClick={onOpen}>
         {isOpen ? <CloseIcon /> : <HamburgerIcon boxSize={6} />}
       </Box>
 
       <Box
-        display={{ base: isOpen ? 'block' : 'none', sm: 'flex' }}
-        width={{ base: 'full', sm: 'auto', md: 'auto' }}
+        display={{ base: isOpen ? "block" : "none", sm: "flex" }}
+        width={{ base: "full", sm: "auto", md: "auto" }}
         alignItems="center"
         flexGrow={1}
         justifyContent="flex-end"
       >
-        <Button bg="navButtonBG" border="1px" borderColor="blackAlpha.800" mr={4} px={2}>
+        <Button
+          onClick={logout}
+          bg="navButtonBG"
+          border="1px"
+          borderColor="blackAlpha.800"
+          mr={4}
+          px={2}
+        >
           Logout
         </Button>
       </Box>

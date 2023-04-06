@@ -3,3 +3,8 @@ export interface Question {
   options: string[];
   correctOptionIndex: number;
 }
+
+export interface Auth {
+  email: string;
+  password: string;
+}
