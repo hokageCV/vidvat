@@ -3,20 +3,7 @@ import { useFormik } from "formik";
 import React from "react";
 import { FormField } from "./FormField";
 import QuizList from "./QuestionsList";
-import { collection, addDoc } from "firebase/firestore";
-import { firestore } from "../../utils/firebase";
-
-function saveToFirestore(data: any) {
-  const collectionRef = collection(firestore, "quizes");
-
-  addDoc(collectionRef, data)
-    .then(() => {
-      console.log("Document successfully written!");
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
-}
+import { saveQuizToFirestore } from "../../utils/quizUtils";
 
 export default function QuizForm() {
   const formik = useFormik({
@@ -29,7 +16,7 @@ export default function QuizForm() {
     },
     onSubmit: (values) => {
       console.log(values);
-      saveToFirestore(values);
+      saveQuizToFirestore(values);
     },
   });
 
