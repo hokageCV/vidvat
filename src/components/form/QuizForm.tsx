@@ -7,7 +7,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "../../utils/firebase";
 
 function saveToFirestore(data: any) {
-  const collectionRef = collection(firestore, "questions");
+  const collectionRef = collection(firestore, "quizes");
 
   addDoc(collectionRef, data)
     .then(() => {
@@ -29,6 +29,7 @@ export default function QuizForm() {
     },
     onSubmit: (values) => {
       console.log(values);
+      saveToFirestore(values);
     },
   });
 
