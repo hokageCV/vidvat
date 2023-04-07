@@ -7,6 +7,7 @@ export interface Question {
 export interface Auth {
   email: string;
   password: string;
+  isStudent: string;
 }
 
 export interface Quiz {

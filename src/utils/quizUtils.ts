@@ -3,9 +3,9 @@ import type { Quiz, QuizDocument } from "../types";
 import { firestore } from "./firebase";
 
 export function putQuizIntoFirestore(data: Quiz) {
-  const collectionRef = collection(firestore, "quizes");
+  const quizCollectionRef = collection(firestore, "quizes");
 
-  addDoc(collectionRef, data)
+  addDoc(quizCollectionRef, data)
     .then(() => {
       console.log("Document successfully written!");
     })
