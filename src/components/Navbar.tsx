@@ -2,9 +2,11 @@ import { Flex, Box, Button, useDisclosure } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import logo from "/logo.png";
 import { logout } from "../utils/authUtils";
+import { useNavigate } from "react-router-dom";
 
 export function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <Flex align="center" justify="space-between" wrap="wrap" bg="navBG" px={4} py={1}>
@@ -25,6 +27,16 @@ export function Navbar() {
         flexGrow={1}
         justifyContent="flex-end"
       >
+        <Button
+          onClick={() => navigate("/new", { replace: true })}
+          bg="navButtonBG"
+          border="1px"
+          borderColor="blackAlpha.800"
+          mr={4}
+          px={2}
+        >
+          Add
+        </Button>
         <Button
           onClick={logout}
           bg="navButtonBG"

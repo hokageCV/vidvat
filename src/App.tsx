@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import './style/App.css';
-import Home from './pages/Home';
-import Auth from './pages/Auth';
-import { Navbar } from './components/Navbar';
-import { Box } from '@chakra-ui/react';
-import QuizForm from './components/form/QuizForm';
-import './utils/firebase';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./style/App.css";
+import Home from "./pages/Home";
+import Auth from "./pages/Auth";
+import { Navbar } from "./components/Navbar";
+import { Box } from "@chakra-ui/react";
+import NewQuizForm from "./components/form/NewQuizForm";
+import "./utils/firebase";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
 
-          <Route path="/new" element={<QuizForm />} />
+          <Route path="/new" element={<NewQuizForm />} />
         </Routes>
       </Box>
     </BrowserRouter>

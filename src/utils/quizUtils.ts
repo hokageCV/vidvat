@@ -1,17 +1,14 @@
-import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import type { Quiz, QuizDocument } from "../types";
 import { firestore } from "./firebase";
 
-export function putQuizIntoFirestore(data: Quiz) {
+export async function putQuizIntoFirestore(data: Quiz) {
   const quizCollectionRef = collection(firestore, "quizes");
-
-  addDoc(quizCollectionRef, data)
-    .then(() => {
-      console.log("Document successfully written!");
-    })
-    .catch((error) => {
-      console.error("Error writing document: ", error);
-    });
+  try {
+    await addDoc(quizCollectionRef, data);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export async function getQuizesFromFirestore() {
@@ -21,6 +18,17 @@ export async function getQuizesFromFirestore() {
     const data = response.docs.map((doc) => ({ ...doc.data(), id: doc.id } as QuizDocument));
 
     return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function updateQuizInFirestore(data: QuizDocument) {
+  const { title, description, points, questions, timeLimit, id } = data;
+
+  try {
+    const quizToUpdate = doc(firestore, "quizes", id);
+    await updateDoc(quizToUpdate, { title, description, points, questions, timeLimit, id });
   } catch (err) {
     console.log(err);
   }

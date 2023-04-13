@@ -1,8 +1,8 @@
-import { FormControl, FormLabel, Input, Button, VStack, HStack, Select } from '@chakra-ui/react';
-import { FormikProps } from 'formik';
-import { useState } from 'react';
+import { FormControl, FormLabel, Input, Button, VStack, HStack, Select } from "@chakra-ui/react";
+import { FormikProps } from "formik";
+import { useState } from "react";
 
-interface QuizListProps {
+interface NewQuizListProps {
   formik: FormikProps<any>;
 }
 
@@ -12,42 +12,42 @@ interface Question {
   correctOptionIndex: number;
 }
 
-export default function QuizList({ formik }: QuizListProps) {
+export default function NewQuizList({ formik }: NewQuizListProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
 
   const addQuestion = () => {
-    setQuestions([...questions, { title: '', options: ['', '', ''], correctOptionIndex: 0 }]);
+    setQuestions([...questions, { title: "", options: ["", "", ""], correctOptionIndex: 0 }]);
   };
 
   const removeQuestion = (index: number) => {
     const newQuestions = [...questions];
     newQuestions.splice(index, 1);
-    formik.setFieldValue('questions', newQuestions);
+    formik.setFieldValue("questions", newQuestions);
     setQuestions(newQuestions);
   };
 
   const handleTitleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestions = [...questions];
     newQuestions[index].title = e.target.value;
-    formik.setFieldValue('questions', newQuestions);
+    formik.setFieldValue("questions", newQuestions);
     setQuestions(newQuestions);
   };
 
   const handleOptionChange = (
     index: number,
     optionIndex: number,
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newQuestions = [...questions];
     newQuestions[index].options[optionIndex] = e.target.value;
-    formik.setFieldValue('questions', newQuestions);
+    formik.setFieldValue("questions", newQuestions);
     setQuestions(newQuestions);
   };
 
   const handleCorrectOptionChange = (index: number, e: React.ChangeEvent<HTMLSelectElement>) => {
     const newQuestions = [...questions];
     newQuestions[index].correctOptionIndex = parseInt(e.target.value);
-    formik.setFieldValue('questions', newQuestions);
+    formik.setFieldValue("questions", newQuestions);
     setQuestions(newQuestions);
   };
 

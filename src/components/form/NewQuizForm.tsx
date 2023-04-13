@@ -1,11 +1,13 @@
 import { Container, Flex, Box, Button, VStack } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React from "react";
-import { FormField } from "./FormField";
-import QuizList from "./QuestionsList";
+import { NewFormField } from "./NewFormField";
+import NewQuizList from "./NewQuestionsList";
 import { putQuizIntoFirestore } from "../../utils/quizUtils";
+import { Quiz } from "../../types";
+import { useNavigate } from "react-router-dom";
 
-const initialFormValues = {
+const defaultFormValues: Quiz = {
   title: "",
   description: "",
   points: 0,
@@ -13,13 +15,14 @@ const initialFormValues = {
   timeLimit: 0,
 };
 
-export default function QuizForm() {
+export default function NewQuizForm() {
+  const navigate = useNavigate();
   const formik = useFormik({
-    initialValues: initialFormValues,
+    initialValues: defaultFormValues,
 
     onSubmit: (values) => {
-      console.log(values);
       putQuizIntoFirestore(values);
+      navigate("/home", { replace: true });
     },
   });
 
@@ -29,11 +32,11 @@ export default function QuizForm() {
         <Box bg="yellow.100" m="20px" p="10px" borderRadius="10px">
           <form onSubmit={formik.handleSubmit}>
             <VStack spacing={4} align="flex-start">
-              <FormField id="title" formik={formik} />
-              <FormField id="description" formik={formik} />
-              <FormField id="points" isNum formik={formik} />
-              <QuizList formik={formik} />
-              <FormField id="timeLimit" isNum formik={formik} />
+              <NewFormField id="title" formik={formik} />
+              <NewFormField id="description" formik={formik} />
+              <NewFormField id="points" isNum formik={formik} />
+              <NewQuizList formik={formik} />
+              <NewFormField id="timeLimit" isNum formik={formik} />
 
               <Button type="submit">Submit</Button>
             </VStack>

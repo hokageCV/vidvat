@@ -10,6 +10,7 @@ export interface Auth {
   isStudent: string;
 }
 
+export interface UserData extends Omit<Auth, "password"> {}
 export interface Quiz {
   title: string;
   description: string;
@@ -20,4 +21,8 @@ export interface Quiz {
 
 export interface QuizDocument extends Quiz {
   id: string;
+}
+
+export function isQuizDocument(data: any): data is QuizDocument {
+  return data.id !== undefined;
 }

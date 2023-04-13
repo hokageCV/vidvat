@@ -2,6 +2,8 @@ import { createUserWithEmailAndPassword, signInWithPopup, signOut } from "fireba
 import { auth, googleProvider, firestore } from "../utils/firebase";
 import { Auth } from "../types";
 import { collection, setDoc, doc } from "firebase/firestore";
+import { useAuthStore } from "../hooks/useAuthStore";
+import type { UserData } from "../types";
 
 export const signInWithEmail = async ({ email, password, isStudent }: Auth) => {
   try {
