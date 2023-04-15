@@ -1,44 +1,45 @@
-import {
-  Box,
-  Button,
-  Container,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
+import { Box, Container, Heading } from "@chakra-ui/react";
 import { getQuizesFromFirestore } from "../utils/quizUtils";
 import { useEffect, useState } from "react";
 import type { QuizDocument } from "../types";
 import QuizCard from "../components/QuizCard";
 import { deleteQuizFromFirestore } from "../utils/quizUtils";
-import { useNavigate } from "react-router-dom";
-import { UpdateQuizForm } from "../components/form/UpdateQuizForm";
+import { useAuthStore } from "../hooks/useAuthStore";
+import { TEACHER } from "../constants";
+import { FormModal } from "../components/FormModal";
+import { UpdateQuizForm } from "../components/form/update/UpdateQuizForm";
+import { AttemptQuizForm } from "../components/form/attempt/AttemptQuizForm";
 
 export default function Home() {
   const [quizes, setQuizes] = useState<QuizDocument[]>([]);
+  const { userData, setUserData } = useAuthStore();
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const handleOpen = () => setModalIsOpen(true);
-  const handleClose = () => setModalIsOpen(false);
+  const [updadeModalIsOpen, setUpdateModalIsOpen] = useState(false);
+  const handleUpdateModalOpen = () => setUpdateModalIsOpen(true);
+  const handleUpdateModalClose = () => setUpdateModalIsOpen(false);
+  const [updateModalData, setUpdateModalData] = useState<QuizDocument>({} as QuizDocument);
+  const handleUpdateModalData = (data: QuizDocument) => setUpdateModalData(data);
 
-  const [modalData, setModalData] = useState<QuizDocument>({} as QuizDocument);
-  const handleModalData = (data: QuizDocument) => setModalData(data);
+  const [attemptModalisOpen, setAttemptModalisOpen] = useState(false);
+  const handleAttemptModalOnOpen = () => setAttemptModalisOpen(true);
+  const handleAttemptModalOnClose = () => setAttemptModalisOpen(false);
+  const [attemptModalData, setAttemptModalData] = useState<QuizDocument>({} as QuizDocument);
+  const handleAttemptModalData = (data: QuizDocument) => setAttemptModalData(data);
 
   const fetchQuizes = async () => {
     const data = await getQuizesFromFirestore();
     if (!data) return;
 
-    setQuizes(data);
+    // if teacher, filter out the quizes that are not owned by the teacher
+    if (userData.userType === TEACHER) {
+      const filteredData = data.filter((quiz) => quiz.ownerEmail === userData.email);
+      setQuizes(filteredData);
+    } else setQuizes(data);
   };
 
   useEffect(() => {
     fetchQuizes();
-  }, [modalIsOpen]);
+  }, [updadeModalIsOpen]);
 
   const handleDelete = (id: string) => {
     deleteQuizFromFirestore(id);
@@ -48,8 +49,13 @@ export default function Home() {
   };
 
   const handleUpdate = (id: string, quizDoc: QuizDocument) => {
-    handleModalData(quizDoc);
-    handleOpen();
+    handleUpdateModalData(quizDoc);
+    handleUpdateModalOpen();
+  };
+
+  const handleAttempt = (id: string, quizDoc: QuizDocument) => {
+    handleAttemptModalData(quizDoc);
+    handleAttemptModalOnOpen();
   };
 
   return (
@@ -63,26 +69,28 @@ export default function Home() {
               quizDoc={quizDoc}
               handleDelete={handleDelete}
               handleUpdate={handleUpdate}
+              handleAttempt={handleAttempt}
             />
           ))}
         </Container>
       </Box>
 
-      {modalIsOpen && (
-        <Modal onClose={handleClose} size={"full"} isOpen={modalIsOpen}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <UpdateQuizForm formValues={modalData} handleClose={handleClose} />
-            </ModalBody>
-            <ModalFooter>
-              <Button onClick={handleClose}>Close</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      )}
+      <FormModal
+        onClose={handleUpdateModalClose}
+        isOpen={updadeModalIsOpen}
+        modalData={updateModalData}
+        handleClose={handleUpdateModalClose}
+        FormComponent={UpdateQuizForm}
+        modalTitle="Update Quiz"
+      />
+      <FormModal
+        onClose={handleAttemptModalOnClose}
+        isOpen={attemptModalisOpen}
+        modalData={attemptModalData}
+        handleClose={handleAttemptModalOnClose}
+        FormComponent={AttemptQuizForm}
+        modalTitle="Attempt Quiz"
+      />
     </>
   );
 }

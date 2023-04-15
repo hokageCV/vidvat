@@ -4,8 +4,8 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import { Navbar } from "./components/Navbar";
 import { Box } from "@chakra-ui/react";
-import NewQuizForm from "./components/form/NewQuizForm";
 import "./utils/firebase";
+import NewQuizForm from "./components/form/new/NewQuizForm";
 
 function App() {
   return (
@@ -13,9 +13,10 @@ function App() {
       <Box className="App">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Navigate to="/auth" />} />
+
           <Route path="/auth" element={<Auth />} />
+          <Route path="/home" element={<Home />} />
 
           <Route path="/new" element={<NewQuizForm />} />
         </Routes>

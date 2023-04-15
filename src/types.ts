@@ -7,16 +7,24 @@ export interface Question {
 export interface Auth {
   email: string;
   password: string;
-  isStudent: string;
+  userType: string;
 }
 
-export interface UserData extends Omit<Auth, "password"> {}
+export interface ScoreData {
+  quizId: string;
+  score: number;
+}
+export interface UserData extends Omit<Auth, "password"> {
+  quizes: Quiz[];
+  scores: ScoreData[];
+}
 export interface Quiz {
   title: string;
   description: string;
   points: number;
   questions: Question[];
   timeLimit: number;
+  ownerEmail: string;
 }
 
 export interface QuizDocument extends Quiz {

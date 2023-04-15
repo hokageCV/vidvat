@@ -3,9 +3,10 @@ import { useFormik } from "formik";
 import React from "react";
 import { NewFormField } from "./NewFormField";
 import NewQuizList from "./NewQuestionsList";
-import { putQuizIntoFirestore } from "../../utils/quizUtils";
-import { Quiz } from "../../types";
 import { useNavigate } from "react-router-dom";
+import { Quiz } from "../../../types";
+import { useAuthStore } from "../../../hooks/useAuthStore";
+import { putQuizIntoFirestore } from "../../../utils/quizUtils";
 
 const defaultFormValues: Quiz = {
   title: "",
@@ -13,15 +14,28 @@ const defaultFormValues: Quiz = {
   points: 0,
   questions: [],
   timeLimit: 0,
+  ownerEmail: "",
 };
 
 export default function NewQuizForm() {
+  const { userData } = useAuthStore();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: defaultFormValues,
 
     onSubmit: (values) => {
-      putQuizIntoFirestore(values);
+      const { title, description, questions, timeLimit } = values;
+
+      const dataToPut = {
+        title,
+        description,
+        questions,
+        timeLimit,
+        points: questions.length,
+        ownerEmail: userData.email,
+      };
+      putQuizIntoFirestore({ ...dataToPut });
+
       navigate("/home", { replace: true });
     },
   });
@@ -34,7 +48,7 @@ export default function NewQuizForm() {
             <VStack spacing={4} align="flex-start">
               <NewFormField id="title" formik={formik} />
               <NewFormField id="description" formik={formik} />
-              <NewFormField id="points" isNum formik={formik} />
+              {/* <NewFormField id="points" isNum formik={formik} /> */}
               <NewQuizList formik={formik} />
               <NewFormField id="timeLimit" isNum formik={formik} />
 

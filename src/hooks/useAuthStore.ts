@@ -6,11 +6,13 @@ type State = {
   setUserData: (userData: UserData) => void;
 };
 
-export const useAuthStore = create((set) => ({
-  userData: { email: "", isStudent: "" },
+export const emptyUserData: UserData = { email: "", userType: "", quizes: [], scores: [] };
 
-  setUserData: (userData: UserData) =>
-    set((prevState: State) => ({
-      userData: { ...prevState.userData, ...userData },
+export const useAuthStore = create<State>((set) => ({
+  userData: emptyUserData,
+
+  setUserData: (objToUpdate) =>
+    set((prevState) => ({
+      userData: { ...prevState.userData, ...objToUpdate },
     })),
 }));

@@ -3,8 +3,8 @@ import { useFormik } from "formik";
 import React from "react";
 import { UpdateFormField } from "./UpdateFormField";
 import UpdateQuizList from "./UpdateQuestionsList";
-import { updateQuizInFirestore } from "../../utils/quizUtils";
-import { QuizDocument } from "../../types";
+import { QuizDocument } from "../../../types";
+import { updateQuizInFirestore } from "../../../utils/quizUtils";
 
 type UpdateQuizFormProps = {
   formValues: QuizDocument;
@@ -36,7 +36,7 @@ export const UpdateQuizForm: React.FunctionComponent<UpdateQuizFormProps> = ({
               <UpdateQuizList formik={formik} />
               <UpdateFormField id="timeLimit" isNum formik={formik} />
 
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Update</Button>
             </VStack>
           </form>
         </Box>
