@@ -49,7 +49,7 @@ export default function QuizCard({
             </Button>
           </>
         ) : (
-          <Tooltip label="begin the test" closeDelay={100}>
+          <Tooltip label="begin the test">
             <Button
               mr="5px"
               bg="yellow.200"

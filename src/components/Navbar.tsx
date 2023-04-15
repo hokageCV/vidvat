@@ -39,7 +39,7 @@ export function Navbar() {
         {userData.userType === TEACHER && (
           <Button
             onClick={() => navigate("/new", { replace: true })}
-            bg="navButtonBG"
+            bg="yellow.300"
             border="1px"
             borderColor="blackAlpha.800"
             mr={4}
@@ -50,7 +50,7 @@ export function Navbar() {
         )}
         <Button
           onClick={handleLogout}
-          bg="navButtonBG"
+          bg="yellow.500"
           border="1px"
           borderColor="blackAlpha.800"
           mr={4}

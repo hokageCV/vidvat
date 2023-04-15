@@ -109,7 +109,7 @@ export default function Auth() {
         {/* <Button colorScheme="blue" mt={4} onClick={signInWithGoogle}>
           SignIn with Google
         </Button> */}
-        <Button colorScheme="none" mt={4} onClick={toggleIsSignedup}>
+        <Button color="black" mt={4} onClick={toggleIsSignedup}>
           {!isSignedup ? "Already have an account? Login" : "Don't have an account? Sign Up"}
         </Button>
       </Box>

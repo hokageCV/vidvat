@@ -1,7 +1,6 @@
 import { Button, Container, Stack, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Question } from "../../../types";
-import { useTimeStore } from "../../../hooks/useTimeStore";
 
 interface QuestionArenaProps {
   questions: Question[];
