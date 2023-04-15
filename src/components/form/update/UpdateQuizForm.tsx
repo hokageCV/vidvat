@@ -32,7 +32,7 @@ export const UpdateQuizForm: React.FunctionComponent<UpdateQuizFormProps> = ({
             <VStack spacing={4} align="flex-start">
               <UpdateFormField id="title" formik={formik} />
               <UpdateFormField id="description" formik={formik} />
-              <UpdateFormField id="points" isNum formik={formik} />
+              {/* <UpdateFormField id="points" isNum formik={formik} /> */}
               <UpdateQuizList formik={formik} />
               <UpdateFormField id="timeLimit" isNum formik={formik} />
 

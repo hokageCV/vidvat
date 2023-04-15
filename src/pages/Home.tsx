@@ -61,8 +61,8 @@ export default function Home() {
   return (
     <>
       <Box bg="baseBG">
-        <Heading>Home</Heading>
         <Container>
+          <Heading mb={5}>All Quizes</Heading>
           {quizes.map((quizDoc) => (
             <QuizCard
               key={quizDoc.id}

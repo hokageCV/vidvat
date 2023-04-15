@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Box, Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
+import { Container, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { Question, QuizDocument } from "../../../types";
+import Countdown from "react-countdown";
+import { useTimeStore } from "../../../hooks/useTimeStore";
+import QuestionArena from "./QuestionArena";
 
 type AttemptQuizFormProps = {
   formValues: QuizDocument;
@@ -10,17 +13,11 @@ type AttemptQuizFormProps = {
 export const AttemptQuizForm = ({ formValues, handleClose }: AttemptQuizFormProps) => {
   const { questions, title, timeLimit, description, points } = formValues;
 
+  const setTime = useTimeStore((store) => store.setTime);
+  setTime(timeLimit);
+
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-
-  const [currentQuesIndex, setCurrentQuesIndex] = useState(0);
-
-  const handleNext = () => {
-    if (currentQuesIndex < questions.length - 1) setCurrentQuesIndex(currentQuesIndex + 1);
-  };
-  const handlePrev = () => {
-    if (currentQuesIndex > 0) setCurrentQuesIndex(currentQuesIndex - 1);
-  };
 
   const displayScore = () => setShowScore(true);
 
@@ -30,32 +27,50 @@ export const AttemptQuizForm = ({ formValues, handleClose }: AttemptQuizFormProp
     if (selectedOptionIndex === correctOptionIndex) setScore((prevScore) => prevScore + 1);
   };
 
-  const onPress = (index: number) => {
-    handleScore(questions[currentQuesIndex], index);
+  //========== timer ==========
+  const Completionist = () => <p>You are good to go!</p>;
 
-    if (currentQuesIndex === questions.length - 1) displayScore();
-    else handleNext();
+  // Renderer callback with condition
+  const renderer = ({ minutes, seconds, completed }: any) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          {minutes}:{seconds}
+        </span>
+      );
+    }
   };
+  // ==========
 
   return (
     <Container>
-      <Heading>Quiz: {title}</Heading>
-      <Text size={"sm"}>{description}</Text>
-      <Text size={"sm"}>Time Limit: {timeLimit}</Text>
-      <Text size={"sm"}>Total Points: {points}</Text>
+      <Heading mb={5}>Quiz: {title}</Heading>
+      <Flex>
+        <Text size={"sm"}>Total Points: {points}</Text>
+        <Spacer />
+        {!showScore && (
+          <Text color="blackAlpha.800">
+            Time left: &nbsp;
+            <Countdown
+              date={Date.now() + timeLimit * 60000}
+              onComplete={() => setShowScore(true)}
+              renderer={renderer}
+            />
+          </Text>
+        )}
+      </Flex>
 
       {!showScore && (
-        <Container bg={showScore ? "gray.500" : "yellow.200"} m={3} p={2} borderRadius={10}>
-          <Text fontSize={"2xl"}>Question {currentQuesIndex + 1}</Text>
-          <Text>{questions[currentQuesIndex].title}</Text>
-          <Stack>
-            {questions[currentQuesIndex].options.map((option, index) => (
-              <Button key={index} onClick={() => onPress(index)}>
-                {option}
-              </Button>
-            ))}
-          </Stack>
-        </Container>
+        <QuestionArena
+          displayScore={displayScore}
+          handleScore={handleScore}
+          questions={questions}
+          showScore={showScore}
+        />
       )}
 
       {showScore && <Heading>Total score: {score}</Heading>}
